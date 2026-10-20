@@ -25,14 +25,10 @@ steps:
       channel: stable
 
   - name: Locate Flutter project
-    run: |
-      if [ -f "pubspec.yaml" ]; then
-        echo "PROJECT_DIR=." >> "$GITHUB_ENV"
-      elif [ -f "amar_hisab_flutter_source (1)/pubspec.yaml" ]; then
-        echo "PROJECT_DIR=amar_hisab_flutter_source (1)" >> "$GITHUB_ENV"
-      else
-        echo "Flutter project pubspec.yaml not found"
-        exit 1
+            PROJECT_PATH=$(find . -maxdepth 3 -name "pubspec.yaml" -not -path "*/.*" -exec dirname {} \; | head -n 1)
+        echo "project_dir=${PROJECT_PATH:-.}" >> "$GITHUB_OUTPUT"
+      
+      exit 1
       fi
 
   - name: Generate Android project files
